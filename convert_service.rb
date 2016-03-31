@@ -3,6 +3,9 @@ require 'pry'
 require 'tilt/erubis'
 SOFFICE_PATH = 'soffice'
 
+set :bind, '0.0.0.0'
+set :port, 8080
+
 # FOR MAC TESTING:
 # SOFFICE_PATH = '/Applications/LibreOffice.app/Contents/MacOS/soffice'
 
