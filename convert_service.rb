@@ -31,7 +31,7 @@ post '/convert' do
   puts 'temp path is '+in_pdf
   # /var/folders/tm/w_dnm6b92cv2rpb3hykdxksm0000gn/T/RackMultipart20160331-50669-1l0wp4z.pdf
   # binding.pry
-  tmp_file_name = rand(36**8).to_s(36)
+  tmp_file_name = libreoffice_instance = rand(36**8).to_s(36)
 
   if file_extention.downcase == 'pdf'
     # If we receive a PDF, it's probably because it's encrypted or has layers. Ghostscript can decrypt it for us.
@@ -46,7 +46,10 @@ post '/convert' do
     puts 'temp path updated to '+in_pdf
   end
 
-  system "#{SOFFICE_PATH} --headless --convert-to pdf #{in_pdf} --outdir converted"
+  # system "#{SOFFICE_PATH} --headless --convert-to pdf #{in_pdf} --outdir converted"
+
+  system "#{SOFFICE_PATH} --headless \"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${libreoffice_instance}\" --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
+
   File.rename(in_pdf, "converted/#{file_basename}.pdf")
   send_file "converted/#{file_basename}.pdf", filename: "#{file_basename}.pdf"
 end
