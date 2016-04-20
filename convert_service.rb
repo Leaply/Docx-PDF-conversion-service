@@ -46,6 +46,6 @@ post '/convert' do
 
   system "#{SOFFICE_PATH} soffice --headless  -env:UserInstallation=file:///tmp/#{libreoffice_instance} --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
 
-  File.rename("converted/#{tmp_file_basename}", "converted/#{file_basename}.pdf")
+  File.rename("converted/#{file_basename}", "converted/#{file_basename}.pdf")
   send_file "converted/#{file_basename}.pdf", filename: "#{file_basename}.pdf", type: 'application/pdf', disposition: 'inline'#, :disposition => 'attachment'
 end
