@@ -48,7 +48,8 @@ post '/convert' do
 
   # system "#{SOFFICE_PATH} --headless --convert-to pdf #{in_pdf} --outdir converted"
 
-  system "#{SOFFICE_PATH} --headless \"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${libreoffice_instance}\" --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
+  libreoffice_instance = rand(0...100000000)
+  system "#{SOFFICE_PATH} --headless \"-env:UserInstallation=/tmp/LibreOffice_Conversion_${libreoffice_instance}\" --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
 
   File.rename(in_pdf, "converted/#{file_basename}.pdf")
   send_file "converted/#{file_basename}.pdf", filename: "#{file_basename}.pdf", type: 'application/pdf', disposition: 'inline'#, :disposition => 'attachment'
