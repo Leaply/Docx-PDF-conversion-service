@@ -35,8 +35,8 @@ post '/convert' do
 
   if file_extention.downcase == 'pdf'
     # If we receive a PDF, it's probably because it's encrypted or has layers. Ghostscript can decrypt it for us.
-    
-    
+
+
     # pry
 
     system "gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=#{pwd}/converted/#{tmp_file_name}.pdf #{params[:datafile][:tempfile].path}"
@@ -51,5 +51,5 @@ post '/convert' do
   system "#{SOFFICE_PATH} --headless \"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${libreoffice_instance}\" --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
 
   File.rename(in_pdf, "converted/#{file_basename}.pdf")
-  send_file "converted/#{file_basename}.pdf", filename: "#{file_basename}.pdf"
+  send_file "converted/#{file_basename}.pdf", filename: "#{file_basename}.pdf", type: 'application/pdf', disposition: 'inline'#, :disposition => 'attachment'
 end
