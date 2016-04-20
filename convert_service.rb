@@ -29,8 +29,6 @@ post '/convert' do
   in_pdf = params[:datafile][:tempfile].path
 
   puts 'temp path is '+in_pdf
-  # /var/folders/tm/w_dnm6b92cv2rpb3hykdxksm0000gn/T/RackMultipart20160331-50669-1l0wp4z.pdf
-  # binding.pry
   tmp_file_name = libreoffice_instance = rand(36**8).to_s(36)
 
   if file_extention.downcase == 'pdf'
@@ -46,11 +44,8 @@ post '/convert' do
     puts 'temp path updated to '+in_pdf
   end
 
-  # system "#{SOFFICE_PATH} --headless --convert-to pdf #{in_pdf} --outdir converted"
-
-  # system "#{SOFFICE_PATH} --headless \"-env:UserInstallation=/tmp/LibreOffice_Conversion_${libreoffice_instance}\" --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
   system "#{SOFFICE_PATH} soffice --headless  -env:UserInstallation=file:///tmp/#{libreoffice_instance} --convert-to pdf:writer_pdf_Export #{in_pdf} --outdir converted"
 
-  File.rename(in_pdf, "converted/#{file_basename}.pdf")
+  File.rename("converted/#{tmp_file_basename}", "converted/#{file_basename}.pdf")
   send_file "converted/#{file_basename}.pdf", filename: "#{file_basename}.pdf", type: 'application/pdf', disposition: 'inline'#, :disposition => 'attachment'
 end
