@@ -41,14 +41,11 @@ post '/convert' do
 
   tmp_file_name = libreoffice_instance = rand(36**8).to_s(36)
 
-  if file_extention.downcase == 'pdf'
+  if file_extention.downcase === 'pdf' || file_extention.downcase === '.pdf'
     logger.info 'Ghostscript PDF to PDF conversion started'
     # If we receive a PDF, it's probably because it's encrypted or has layers. Ghostscript can decrypt it for us.
 
-
-    # pry
-
-    system "gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=#{pwd}/converted/#{tmp_file_name}.pdf #{params[:datafile][:tempfile].path}"
+    system "gs -sDEVICE=pdfwrite -dSAFER -dBATCH -dNOPAUSE -dNOCACHE -sColorConversionStrategy=/LeaveColorUnchanged -dAutoFilterColorImages=true -dAutoFilterGrayImages=true -dDownsampleMonoImages=true -dDownsampleGrayImages=true -dDownsampleColorImages=true -sOutputFile=#{pwd}/converted/#{tmp_file_basename}.pdf #{params[:datafile][:tempfile].path}"
     # system "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/Users/constantmeiring/Desktop/#{tmp_file_name}.pdf -c .setpdfwrite -f #{params[:datafile][:tempfile].path}"
 
     in_pdf = "#{pwd}/converted/#{tmp_file_name}.pdf"
