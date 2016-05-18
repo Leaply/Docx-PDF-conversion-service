@@ -3,6 +3,7 @@ require 'pry'
 require 'tilt/erubis'
 SOFFICE_PATH = 'soffice'
 
+set :server, :puma
 set :bind, '0.0.0.0'
 set :port, 8080
 set :logging, true
